@@ -9,6 +9,12 @@ wheels/
 # Virtual environments
 .venv
 
+# Data and parameters
 .env
 .ipynb_checkpoints
 *.db
+
+# Other folders
+data/
+logs/
+plugins/
