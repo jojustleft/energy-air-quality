@@ -1,0 +1,8 @@
+The docker-compose.yml in this repository is adapted from the official
+Apache Airflow docker-compose file and is used under the Apache License 2.0.
+
+Apache Airflow
+Copyright 2016-2026 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
