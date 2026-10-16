@@ -43,11 +43,11 @@ def fetch_missing_files(db_name, target_table, location, year):
         """)
 
         # Get list of files not in local storage
-        files_missing = conn.sql('''
+        files_missing = conn.sql(f'''
         SELECT file
-        FROM glob('s3://openaq-data-archive/records/csv.gz/locationid=$location/year=$year/*/*.csv.gz')
-        WHERE file NOT IN (SELECT DISTINCT filename FROM query_table($table))
-        ''', params={'table': target_table, 'location': location, 'year': year}).pl()['file'].to_list()
+        FROM glob('s3://openaq-data-archive/records/csv.gz/locationid={location}/year={year}/*/*.csv.gz')
+        WHERE file NOT IN (SELECT DISTINCT filename FROM {target_table})
+        ''').pl()['file'].to_list()
 
     return files_missing
 
