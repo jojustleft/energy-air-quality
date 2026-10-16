@@ -9,12 +9,18 @@ wheels/
 # Virtual environments
 .venv
 
+# Mac files
+.DS_Store
+
 # Data and parameters
 .env
 .ipynb_checkpoints
 *.db
+*.ddb
+*.duckdb
 
-# Other folders
+# Airflow and pipeline folders and files
 data/
 logs/
 plugins/
+dags/test_dag.py
