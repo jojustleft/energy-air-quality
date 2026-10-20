@@ -16,8 +16,9 @@ def setup_db(db_name, target_table):
     db_filepath = os.path.join(os.environ.get('DUCKDB_FOLDER'), db_name)
     print(f'Setting up {db_filepath}')
     with duckdb.connect(db_filepath) as conn:
+        conn.execute('CREATE SCHEMA IF NOT EXISTS raw')
         conn.execute(f'''
-        CREATE TABLE IF NOT EXISTS {target_table} (
+        CREATE TABLE IF NOT EXISTS raw.{target_table} (
             location_id BIGINT,
             sensors_id BIGINT,
             location VARCHAR,
@@ -46,7 +47,7 @@ def fetch_missing_files(db_name, target_table, location, year):
         files_missing = conn.sql(f'''
         SELECT file
         FROM glob('s3://openaq-data-archive/records/csv.gz/locationid={location}/year={year}/*/*.csv.gz')
-        WHERE file NOT IN (SELECT DISTINCT filename FROM {target_table})
+        WHERE file NOT IN (SELECT DISTINCT filename FROM raw.{target_table})
         ''').pl()['file'].to_list()
 
     return files_missing
@@ -66,11 +67,11 @@ def ingest_s3(db_name, target_table, location, year, files_missing):
                 """)
 
                 rows_before = conn.sql('''SELECT COUNT(*) AS num_rows from query_table($table)''',
-                                       params={'table': target_table}).pl()['num_rows'][0]
+                                       params={'table': f'raw.{target_table}'}).pl()['num_rows'][0]
     
                 # Read S3 into DuckDB
                 conn.sql(f'''
-                INSERT INTO {target_table}
+                INSERT INTO raw.{target_table}
                 SELECT
                     location_id, sensors_id, location, datetime, lat, lon, parameter, units, value, NOW() AS created_at, filename
                 FROM read_csv(
@@ -87,7 +88,7 @@ def ingest_s3(db_name, target_table, location, year, files_missing):
                 ''', params={'files': files_missing})
     
                 rows_after = conn.sql('''SELECT COUNT(*) AS num_rows from query_table($table)''',
-                                        params={'table': target_table}).pl()['num_rows'][0]
+                                      params={'table': f'raw.{target_table}'}).pl()['num_rows'][0]
     
                 added_rows = rows_after - rows_before
                 print(f'Location {location} - {year}: Added {added_rows} rows')

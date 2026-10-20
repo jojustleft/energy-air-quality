@@ -19,8 +19,10 @@ wheels/
 *.ddb
 *.duckdb
 
-# Airflow and pipeline folders and files
+# Airflow, dbt and pipeline folders and files
 data/
 logs/
 plugins/
 dags/test_dag.py
+target/
+seeds/
