@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: int_measurements
+    description: |
+      Fact table containing Open AQ S3 historical location readings (clean data).
+    columns:
+      - name: ts_utc
+        description: Timestamp of a given measurement (UTC), hourly
+        data_type: timestamp
+      - name: location_id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - not_null
+      - name: parameter
+        description: Metric being measured by the sensor
+        data_type: varchar
+      - name: units
+        description: Parameter's unit type
+        data_type: varchar
+      - name: measurement
+        description: Value of the metric
+        data_type: double precision

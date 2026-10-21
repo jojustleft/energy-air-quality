@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: stg_locations
+    description: |
+      Dimension table with Open AQ location lookup data.
+      Contains information such as measured unit types, coordinates and time interval of data.
+    columns:
+      - name: id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: Name of location
+        data_type: varchar
+      - name: sensor_units
+        description: List of measurement units that are measured
+        data_type: varchar[]
+      - name: lat
+        description: Latitude of location
+        data_type: double precision
+      - name: lon
+        description: Longitude of location
+        data_type: double precision
+      - name: licenses
+        description: Metric being measured by the sensor
+        data_type: varchar[]
+      - name: dt_start
+        description: Earliest registered timestamp (UTC)
+        data_type: timestamp
+      - name: dt_end
+        description: Latest registered timestamp (UTC)
+        data_type: timestamp
+      - name: created_at
+        description: Timestamp the data was obtained from the API
+        data_type: timestamp
+  - name: stg_measurements
+    description: >
+      Fact table containing Open AQ S3 historical location readings.
+      Data is in long format in hourly intervals.
+    columns:
+      - name: ts_utc
+        description: Timestamp of a given measurement (UTC), hourly
+        data_type: timestamp
+      - name: ts_local
+        description: Timestamp of a given measurement (local time), hourly
+        data_type: timestamp
+      - name: location_id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - not_null
+      - name: sensors_id
+        description: Individual Open AQ location sensor Id (dedicated to measuring a single metric)
+        data_type: integer
+      - name: location_name
+        description: Name of location
+        data_type: varchar
+      - name: lat
+        description: Latitude of location
+        data_type: double precision
+      - name: lon
+        description: Longitude of location
+        data_type: double precision
+      - name: parameter
+        description: Metric being measured by the sensor
+        data_type: varchar
+      - name: units
+        description: Parameter's unit type
+        data_type: varchar
+      - name: measurement
+        description: Value of the metric
+        data_type: double precision
+      - name: created_at
+        description: Timestamp the data was obtained from S3
+        data_type: timestamp
+      - name: filename
+        description: S3 filename the data was obtained from
+        data_type: varchar
+  
