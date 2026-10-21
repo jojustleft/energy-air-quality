@@ -26,3 +26,5 @@ plugins/
 dags/test_dag.py
 target/
 seeds/
+dbt/profiles.yml
+dbt/.user.yml

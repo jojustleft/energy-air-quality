@@ -1,0 +1,17 @@
+name: energy_air_quality
+version: "1.0.0"
+profile: energy_air_quality
+
+on-run-start:
+  - "create schema if not exists staging;"
+  - "create schema if not exists analytics;"
+
+
+models:
+  energy_air_quality:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: analytics

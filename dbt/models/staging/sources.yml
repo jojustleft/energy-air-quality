@@ -1,0 +1,55 @@
+sources:
+  - name: openaq_raw
+    description: >
+      Open AQ data obtained from S3 (historical measurement data using ingest_openaq_s3 DAG) 
+      and the API (location info using openaq_location_info DAG).
+      Contains measurements for 2020-2023.
+    database: aq_raw
+    schema: raw
+    tables:
+     - name: measurements
+       description: Open AQ S3 historical location readings
+       columns:
+        - name: location_id
+          description: Open AQ monitoring station location Id
+        - name: sensors_id
+          description: Individual Open AQ location sensor Id (dedicated to measuring a single metric)
+        - name: location
+          description: Name of location
+        - name: datetime
+          description: Timestamp of a given measurement (with local timezone)
+        - name: lat
+          description: Latitude of location
+        - name: lon
+          description: Longitude of location
+        - name: parameter
+          description: Metric being measured by the sensor
+        - name: units
+          description: Parameter's unit type
+        - name: value
+          description: Value of the metric
+        - name: created_at
+          description: Timestamp the data was obtained from S3
+        - name: filename
+          description: S3 filename the data was obtained from
+     - name: locations
+       description: Open AQ location information
+       columns:
+        - name: id
+          description: Open AQ monitoring station location Id
+        - name: name
+          description: Name of location
+        - name: sensor_units
+          description: List of measurement units that are measured
+        - name: lat
+          description: Latitude of location
+        - name: lon
+          description: Longitude of location
+        - name: licenses
+          description: Metric being measured by the sensor
+        - name: dt_start
+          description: Earliest registered timestamp
+        - name: dt_end
+          description: Latest registered timestamp
+        - name: created_at
+          description: Timestamp the data was obtained from the API
