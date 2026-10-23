@@ -22,3 +22,46 @@ models:
       - name: measurement
         description: Value of the metric
         data_type: double precision
+  - name: int_aq_daily
+    description: |
+      Fact table containing Open AQ S3 daily aggregated location readings.
+      Data is aggregated by day, OpenAQ station and parameter.
+    columns:
+      - name: date_utc
+        description: Date of a given measurement (UTC)
+        data_type: date
+      - name: location_id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - not_null
+      - name: units
+        description: Parameter's unit type
+        data_type: varchar
+      - name: parameter
+        description: Metric being measured by the sensor
+        data_type: varchar
+      - name: min
+        description: Daily minimum reading
+        data_type: numeric
+      - name: p25
+        description: 25th percentile of readings
+        data_type: numeric
+      - name: p50
+        description: 50th percentile (median) of readings
+        data_type: numeric
+      - name: mean
+        description: Average of readings
+        data_type: numeric
+      - name: p75
+        description: 75th percentile of readings
+        data_type: numeric
+      - name: p95
+        description: 95th percentile of readings
+        data_type: numeric
+      - name: max
+        description: Daily maximum reading
+        data_type: numeric
+      - name: logged_hours
+        description: Total hours for a given daily parameter's aggregation
+        data_type: integer

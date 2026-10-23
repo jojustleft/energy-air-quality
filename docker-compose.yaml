@@ -146,7 +146,33 @@ services:
             timeout: 5s
             retries: 5
         restart: always
+    
+    metabase:
+        image: metabase/metabase:v0.64-lts
+        container_name: metabase
+        hostname: metabase
+        restart: always
+        ports:
+            - "3000:3000"
+        environment:
+            MB_DB_TYPE: postgres
+            MB_DB_DBNAME: ${WAREHOUSE_DB:-energy_air_quality}
+            MB_DB_PORT: 5432
+            MB_DB_USER: ${WAREHOUSE_USER:-admin}
+            MB_DB_HOST: warehouse
+            MB_DB_PASS: ${WAREHOUSE_PASSWORD:-admin}
+            JAVA_TIMEZONE: "Etc/UTC"
+        volumes:
+            - metabase-volume:/metabase-data
+        depends_on:
+            - 'warehouse'
+        healthcheck:
+            test: curl --fail -I http://localhost:3000/api/health || exit 1
+            interval: 15s
+            timeout: 5s
+            retries: 5
 
 volumes:
     postgres-db-volume:
     warehouse-db-volume:
+    metabase-volume:
