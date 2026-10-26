@@ -39,6 +39,7 @@ x-airflow-common: &airflow-common
         AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
         LOCATIONS: ${LOCATIONS}
         YEARS: ${YEARS}
+        POWER_PLANT_DATA_FILEPATH: ${POWER_PLANT_DATA_FILEPATH}
 
     volumes:
         - ./dags:/opt/airflow/dags

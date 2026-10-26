@@ -12,4 +12,4 @@ ENV DUCKDB_FOLDER=/opt/airflow/data
 COPY --chown=airflow:0 pyproject.toml uv.lock ./
 RUN uv sync --locked --no-dev --no-install-project
 
-RUN /opt/venv/bin/python -c "import duckdb; duckdb.install_extension('httpfs')"
+RUN /opt/venv/bin/python -c "import duckdb; duckdb.install_extension('httpfs'); duckdb.install_extension('spatial')"

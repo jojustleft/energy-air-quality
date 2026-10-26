@@ -53,3 +53,22 @@ sources:
           description: Latest registered timestamp
         - name: created_at
           description: Timestamp the data was obtained from the API
+     - name: power_plants
+       description: Global Power Plant data
+       columns:
+        - name: country
+          description: Power plant country alpha-3 code
+        - name: country_long
+          description: Power plant country name
+        - name: name
+          description: Power plant name
+        - name: gppd_idnr
+          description: Power plant Id
+        - name: capacity_mw
+          description: Power plant capacity (in megawatts)
+        - name: latitude
+          description: Latitude of power plant
+        - name: longitude
+          description: Longitude of power plant
+        - name: primary_fuel
+          description: Main electricity source

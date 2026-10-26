@@ -65,3 +65,32 @@ models:
       - name: logged_hours
         description: Total hours for a given daily parameter's aggregation
         data_type: integer
+  - name: int_distances
+    description: |
+      Dimension table containing (power plant, OpenAQ station) pairs that are within 100km of each other.
+    columns:
+      - name: power_plant_id
+        description: Power plant Id
+        data_type: varchar
+        tests:
+          - not_null
+      - name: location_id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - not_null
+      - name: power_plant_lat
+        description: Latitude of power plant
+        data_type: double precision
+      - name: power_plant_lon
+        description: Longitude of power plant
+        data_type: double precision
+      - name: power_plant_lat
+        description: Latitude of Open AQ monitoring station
+        data_type: double precision
+      - name: power_plant_lon
+        description: Longitude of Open AQ monitoring station
+        data_type: double precision
+      - name: distance_m
+        description: Distance between power plant and Open AQ monitoring station, in meters
+        data_type: double precision
