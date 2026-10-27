@@ -1,0 +1,130 @@
+version: 2
+
+models:
+  - name: fct_aq_daily
+    description: |
+      Fact table containing Open AQ S3 daily aggregated location readings.
+      Data is aggregated by day, OpenAQ station and parameter.
+    columns:
+      - name: date_utc
+        description: Date of a given measurement (UTC)
+        data_type: date
+      - name: location_id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - not_null
+      - name: units
+        description: Parameter's unit type
+        data_type: varchar
+      - name: parameter
+        description: Metric being measured by the sensor
+        data_type: varchar
+      - name: min
+        description: Daily minimum reading
+        data_type: numeric
+      - name: p25
+        description: 25th percentile of readings
+        data_type: numeric
+      - name: p50
+        description: 50th percentile (median) of readings
+        data_type: numeric
+      - name: mean
+        description: Average of readings
+        data_type: numeric
+      - name: p75
+        description: 75th percentile of readings
+        data_type: numeric
+      - name: p95
+        description: 95th percentile of readings
+        data_type: numeric
+      - name: max
+        description: Daily maximum reading
+        data_type: numeric
+      - name: logged_hours
+        description: Total hours for a given daily parameter's aggregation
+        data_type: integer
+  - name: fct_aq_monthly
+    description: |
+      Fact table containing Open AQ S3 daily aggregated location readings.
+      Data is aggregated by month, OpenAQ station and parameter.
+    columns:
+      - name: month_utc
+        description: Date month of a given measurement (UTC)
+        data_type: date
+      - name: location_id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - not_null
+      - name: units
+        description: Parameter's unit type
+        data_type: varchar
+      - name: parameter
+        description: Metric being measured by the sensor
+        data_type: varchar
+      - name: lowest_min
+        description: Lowest monthly reading
+        data_type: numeric
+      - name: mean_min
+        description: Average of daily minimum readings
+        data_type: numeric
+      - name: mean_p25
+        description: Monthly average of 25th percentile of readings
+        data_type: numeric
+      - name: mean_p50
+        description: Monthly average of 50th percentile of readings
+        data_type: numeric
+      - name: mean_p75
+        description: Monthly average of 75th percentile of readings
+        data_type: numeric
+      - name: mean_max
+        description: Average of daily maximum readings
+        data_type: numeric
+      - name: highest_max
+        description: Highest monthly reading
+        data_type: numeric
+      - name: logged_days
+        description: Total days for a given monthly parameter's aggregation
+        data_type: integer
+  - name: dim_locations
+    description: |
+      Dimension table with Open AQ location lookup data.
+      Contains information such as measured unit types, coordinates and time interval of data.
+    columns:
+      - name: id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: Name of location
+        data_type: varchar
+      - name: sensor_units
+        description: List of measurement units that are measured
+        data_type: varchar[]
+      - name: lat
+        description: Latitude of location
+        data_type: double precision
+      - name: lon
+        description: Longitude of location
+        data_type: double precision
+      - name: licenses
+        description: Metric being measured by the sensor
+        data_type: varchar[]
+      - name: dt_start
+        description: Earliest registered timestamp (UTC)
+        data_type: timestamp
+      - name: dt_end
+        description: Latest registered timestamp (UTC)
+        data_type: timestamp
+      - name: nearby_stations
+        description: Total power stations within 10km of Open AQ monitoring station
+        data_type: timestamp
+      - name: nearby_stations_high_pollution
+        description: Total power stations with high pollutants (Coal, Oil, Gas) within 10km of Open AQ monitoring station
+        data_type: timestamp
+      - name: nearby_stations_low_medium_pollution
+        description: Total power stations with low / medium pollutants (Waste, Biomass, Geothermal, Hydro) within 10km of Open AQ monitoring station
+        data_type: timestamp
