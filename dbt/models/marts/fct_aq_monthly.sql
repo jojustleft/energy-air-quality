@@ -18,5 +18,5 @@ SELECT
 FROM {{ ref('int_aq_daily') }}
 WHERE
     logged_hours >= 18
-GROUP BY ts_month, location_id, units, parameter
-ORDER BY ts_month, location_id
+GROUP BY month_utc, location_id, units, parameter
+ORDER BY month_utc, location_id
