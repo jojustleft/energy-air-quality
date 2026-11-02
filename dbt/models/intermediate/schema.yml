@@ -22,6 +22,13 @@ models:
       - name: measurement
         description: Value of the metric
         data_type: double precision
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - ts_utc
+              - location_id
+              - parameter
   - name: int_aq_daily
     description: |
       Fact table containing Open AQ S3 daily aggregated location readings.
@@ -65,6 +72,13 @@ models:
       - name: logged_hours
         description: Total hours for a given daily parameter's aggregation
         data_type: integer
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - date_utc
+              - location_id
+              - parameter  
   - name: int_distances
     description: |
       Dimension table containing (power plant, OpenAQ station) pairs that are within 100km of each other.
@@ -94,3 +108,9 @@ models:
       - name: distance_m
         description: Distance between power plant and Open AQ monitoring station, in meters
         data_type: double precision
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - power_plant_id
+              - location_id

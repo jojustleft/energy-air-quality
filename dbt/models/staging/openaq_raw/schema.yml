@@ -79,4 +79,47 @@ models:
       - name: filename
         description: S3 filename the data was obtained from
         data_type: varchar
-  
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - ts_utc
+              - location_id
+              - parameter
+  - name: stg_power_plants
+    description: |
+      Global Power Plant data
+    columns:
+      - name: country
+        description: Power plant country alpha-3 code
+        data_type: varchar
+      - name: country_long
+        description: Power plant country name
+        data_type: varchar
+      - name: name
+        description: Power plant name
+        data_type: varchar
+      - name: gppd_idnr
+        description: Power plant Id
+        tests:
+          - unique
+          - not_null
+        data_type: varchar
+      - name: capacity_mw
+        description: Power plant capacity (in megawatts)
+        data_type: numeric
+      - name: lat
+        description: Latitude of power plant
+        data_type: double precision
+        tests:
+          - not_null
+      - name: lon
+        description: Longitude of power plant
+        data_type: double precision
+        tests:
+          - not_null
+      - name: primary_fuel
+        description: Main electricity source
+        data_type: varchar
+        tests:
+          - not_null

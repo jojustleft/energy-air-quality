@@ -6,7 +6,6 @@ on-run-start:
   - "create schema if not exists staging;"
   - "create schema if not exists analytics;"
 
-
 models:
   energy_air_quality:
     staging:
@@ -16,3 +15,13 @@ models:
       +materialized: table
       +schema: analytics
       +database: warehouse
+  dbt_project_evaluator:
+    marts:
+      tests:
+        # All data sources for this project are "static"
+        fct_sources_without_freshness:
+          +enabled: false
+
+dispatch:
+  - macro_namespace: dbt
+    search_order: ['dbt_project_evaluator', 'dbt']
