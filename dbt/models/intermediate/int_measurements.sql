@@ -28,7 +28,7 @@ WITH
         generate_series(time_boundaries.min_ts, time_boundaries.max_ts, INTERVAL 1 HOUR) tbl(ts_utc)
     ),
     breakdown_vals AS (
-        SELECT DISTINCT location_id, parameter, units FROM staging.stg_measurements
+        SELECT DISTINCT location_id, parameter, units FROM {{ ref('stg_measurements') }}
     ),
     -- This method of padding missing row combinations forces us to select a time column
     -- (Unless we want to increase the query complexity considerably)

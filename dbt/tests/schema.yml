@@ -1,0 +1,9 @@
+data_tests:
+  - name: assert_consistent_parameter_units
+    description: Check if any air quality parameter registers more than one unique unit type.
+  - name: assert_non_negative_values
+    description: Check if any air quality reading is negative.
+  - name: assert_similar_coordinates
+    description: Check if air quality station coordinates differ significantly between historical S3 readings and API info.
+  - name: assert_one_id_per_parameter
+    description: Check if there are multiple air quality location sensors for any given parameter.
