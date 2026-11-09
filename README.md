@@ -30,7 +30,7 @@ The ELT and analysis was built using the following OpenAQ data providers
         <tr>
             <td>Unknown Governmental Organization</td>
             <td><a href="https://opendatacommons.org/licenses/by/1-0/">ODC-BY</a></td>
-            <td>2669, 2935, 3068, 3078, 3093, 3099, 3158, 3180, 3187, 3202, 3915, 4557, 4701, 4751, 4752</td>
+            <td>2669, 2709, 2932, 2935, 2938, 2940, 2941, 2965, 2967, 2968, 2970, 2971, 3009, 3011, 3013, 3032, 3033, 3036, 3037, 3038, 3039, 3044, 3045, 3049, 3055, 3056, 3061, 3065, 3067, 3068, 3069, 3076, 3078, 3081, 3082, 3084, 3093, 3099, 3100, 3104, 3105, 3110, 3118, 3119, 3120, 3121, 3123, 3124, 3127, 3129, 3130, 3131, 3134, 3135, 3137, 3138, 3139, 3151, 3152, 3155, 3158, 3166, 3175, 3179, 3180, 3186, 3187, 3191, 3193, 3202, 3203, 3205, 3209, 3210, 3211, 3215, 3370, 3915, 3970, 4456, 4460, 4462, 4468, 4488, 4495, 4499, 4522, 4531, 4544, 4557, 4561, 4583, 4614, 4615, 4630, 4645, 4664, 4672, 4674, 4675, 4676, 4677, 4678, 4685, 4686, 4687, 4688, 4691, 4696, 4697, 4699, 4700, 4701, 4705, 4707, 4710, 4716, 4717, 4722, 4724, 4726, 4727, 4728, 4730, 4731, 4732, 4733, 4736, 4740, 4744, 4745, 4746, 4749, 4751, 4752, 4754, 4755, 4756, 4771, 4773, 4774, 4777, 4778, 4779, 4780, 4781, 4784, 4785, 4787, 4789, 4790, 4791, 4794, 4797, 7761, 8133, 8140, 2876225, 2995861</td>
         </tr>
     </table>
 </details>
@@ -45,6 +45,23 @@ _OpenAQ's metadata for these stations names the license (ODC-BY) but gives no li
 Before air quality readings are obtained, a list of areas to obtain data from must be established first.
 
 `power_plant_analysis.ipynb` contains an extensive analysis on Power Plant distributions and uses clustering metrics to detect where different fuel pollution levels are separated, thus reducing the likelihood of interference in the final obtained data.
+
+While this approach of "selecting areas first, then associated stations" returned a decent sized sample of entries to obtain data from, air quality readings obtained after the ELT had high shares of missing data, frequently leading to monthly gaps on high level views:
+
+![](media/missing_data_example.png)
+<i><b>Figure 1:</b> Example of missing data when showing monthly averages. For monthly aggregations, only entries with at least 15 days with 75% hourly coverage are allowed to avoid anomalies.</i>
+
+An addendum was added which relies on a more top-down approach: we request from the OpenAQ API all stations found in Germany, and filter down to a set with less area coverage redundancy using a greedy search algorithm. This method, despite not guaranteeing global maxima, has a much smaller runtime.
+
+The original set included close to 650 entries, narrowed down to 150 for the final set:
+
+<div style="display: flex">
+    <div style="flex: 1 1 0px">
+        <img src="media/germany_air_quality_all.png" width=49%>
+        <img src="media/germany_air_quality_selected.png" width=49%>
+    </div>
+</div>
+<i><b>Figures 2 and 3:</b> Air quality stations in Germany obtained from the OpenAQ API and final selected set narrowed down by greedy search.</i>
 
 
 ## Architecture
