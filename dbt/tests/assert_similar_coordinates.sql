@@ -18,6 +18,6 @@ FROM raw_data m
     JOIN locations d
     ON m.location_id = d.id
 WHERE 
-    (ABS(m.lat - d.lat) / d.lat) > 0.00001
-    OR (ABS(m.lon - d.lon) / d.lon) > 0.00001
+    (ABS(m.lat - d.lat) / d.lat) > 0.0001
+    OR (ABS(m.lon - d.lon) / d.lon) > 0.0001
 ORDER BY location_id

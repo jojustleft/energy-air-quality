@@ -3,7 +3,8 @@
 
 -- During development, this scenario never occurred, however, we cannot filter it outright because we wouldn't know
 -- in which circumstances this happens (Sensor replacement? Measurement redundancy?)
--- So, it is best that it is handled only if it actually happens.
+-- The assert_non_overlapping_sensors test will check if the multiple sensors are redundant (i.e.: there is overlap in usage timeline)
+
 {{ config(severity='warn') }}
 
 SELECT

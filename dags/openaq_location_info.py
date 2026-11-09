@@ -1,5 +1,4 @@
 from airflow.decorators import dag
-from airflow.hooks.base import BaseHook
 from airflow.providers.standard.operators.python import ExternalPythonOperator
 from airflow.sdk import Param
 
@@ -71,6 +70,8 @@ def ingest_api(db_name, target_table, locations_missing, connection_uri, delay_s
             try:
                 for loc in locations_missing:
                     res = requests.get(f'{open_aq_api_url}/{loc}', headers=headers)
+                    res.raise_for_status()
+                    
                     entry = res.json()['results'][0]
                     time.sleep(delay_s)
                     try:
@@ -94,7 +95,7 @@ def ingest_api(db_name, target_table, locations_missing, connection_uri, delay_s
                 if len(entries_skipped) > 0:
                     warnings.warn(f'{len(entries_skipped)} stations were skipped due to parsing errors: {entries_skipped}')
             except requests.exceptions.HTTPError:
-                print(f'API call returned {res.status_code}: {res.text}')
+                print(f'API call returned {res.status_code} for location {loc}: {res.text}')
 
             rows_after = conn.sql('''SELECT COUNT(*) AS num_rows from query_table($table)''',
                                   params={'table': f'raw.{target_table}'}).fetchall()[0][0]

@@ -177,3 +177,29 @@ models:
             combination_of_columns:
               - power_plant_id
               - location_id
+  - name: dim_sensors
+    description: |
+      Dimension table containing sensor information such as associated location Id, parameter and min and max observed dates.
+    columns:
+      - name: location_id
+        description: Open AQ monitoring station location Id
+        data_type: integer
+        tests:
+          - not_null
+      - name: sensors_id
+        description: Air quality sensor Id
+        data_type: integer
+        tests:
+          - not_null
+          - unique
+      - name: parameter
+        description: Metric being measured by the sensor
+        data_type: varchar
+        tests:
+          - not_null
+      - name: min_ts_utc
+        description: Minimum observed timestamp
+        data_type: timestamp
+      - name: max_ts_utc
+        description: Maximum observed timestamp
+        data_type: timestamp
